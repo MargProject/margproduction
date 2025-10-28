@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<rdf:RDF
+  xmlns:dcterms="http://purl.org/dc/terms/"
+  xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+  xmlns:skos="http://www.w3.org/2004/02/skos/core#">
+
+  <!-- ConceptScheme -->
+  <skos:ConceptScheme rdf:about="http://marg.org/thesaurus/marg">
+    <dcterms:description xml:lang="en">Covers concepts required for the MARG Project</dcterms:description>
+    <dcterms:title xml:lang="en">MARG</dcterms:title>
+    <skos:hasTopConcept rdf:resource="http://marg.org/thesaurus/marg/admin-subdivision"/>
+    <skos:hasTopConcept rdf:resource="http://marg.org/thesaurus/marg/tangible-heritage"/>
+  </skos:ConceptScheme>
+
+  <!-- Administrative Subdivision -->
+  <skos:Concept rdf:about="http://marg.org/thesaurus/marg/admin-subdivision">
+    <skos:prefLabel xml:lang="en">Administrative Subdivision Type (India)</skos:prefLabel>
+    <skos:inScheme rdf:resource="http://marg.org/thesaurus/marg"/>
+    <skos:narrower rdf:resource="http://marg.org/thesaurus/marg/sub-district"/>
+  </skos:Concept>
+
+  <!-- Sub Concept -->
+  <skos:Concept rdf:about="http://marg.org/thesaurus/marg/sub-district">
+    <skos:prefLabel xml:lang="en">Sub-district</skos:prefLabel>
+    <skos:inScheme rdf:resource="http://marg.org/thesaurus/marg"/>
+  </skos:Concept>
+
+  <!-- Tangible Heritage -->
+  <skos:Concept rdf:about="http://marg.org/thesaurus/marg/tangible-heritage">
+    <skos:prefLabel xml:lang="en">Tangible Heritage Typology Type</skos:prefLabel>
+    <skos:inScheme rdf:resource="http://marg.org/thesaurus/marg"/>
+    <skos:narrower rdf:resource="http://marg.org/thesaurus/marg/immovable"/>
+    <skos:narrower rdf:resource="http://marg.org/thesaurus/marg/movable"/>
+  </skos:Concept>
+
+  <!-- Immovable -->
+  <skos:Concept rdf:about="http://marg.org/thesaurus/marg/immovable">
+    <skos:prefLabel xml:lang="en">Immovable</skos:prefLabel>
+    <skos:inScheme rdf:resource="http://marg.org/thesaurus/marg"/>
+    <skos:narrower rdf:resource="http://marg.org/thesaurus/marg/monuments"/>
+    <skos:narrower rdf:resource="http://marg.org/thesaurus/marg/historical-buildings"/>
+    <skos:narrower rdf:resource="http://marg.org/thesaurus/marg/archaeological-sites"/>
+  </skos:Concept>
+
+  <skos:Concept rdf:about="http://marg.org/thesaurus/marg/monuments">
+    <skos:prefLabel xml:lang="en">Monuments</skos:prefLabel>
+    <skos:inScheme rdf:resource="http://marg.org/thesaurus/marg"/>
+  </skos:Concept>
+
+  <skos:Concept rdf:about="http://marg.org/thesaurus/marg/historical-buildings">
+    <skos:prefLabel xml:lang="en">Historical Buildings</skos:prefLabel>
+    <skos:inScheme rdf:resource="http://marg.org/thesaurus/marg"/>
+  </skos:Concept>
+
+  <skos:Concept rdf:about="http://marg.org/thesaurus/marg/archaeological-sites">
+    <skos:prefLabel xml:lang="en">Archaeological Sites</skos:prefLabel>
+    <skos:inScheme rdf:resource="http://marg.org/thesaurus/marg"/>
+  </skos:Concept>
+
+  <!-- Movable -->
+  <skos:Concept rdf:about="http://marg.org/thesaurus/marg/movable">
+    <skos:prefLabel xml:lang="en">Movable</skos:prefLabel>
+    <skos:inScheme rdf:resource="http://marg.org/thesaurus/marg"/>
+    <skos:narrower rdf:resource="http://marg.org/thesaurus/marg/paintings"/>
+    <skos:narrower rdf:resource="http://marg.org/thesaurus/marg/sculptures"/>
+    <skos:narrower rdf:resource="http://marg.org/thesaurus/marg/furniture"/>
+    <skos:narrower rdf:resource="http://marg.org/thesaurus/marg/manuscripts"/>
+  </skos:Concept>
+
+  <skos:Concept rdf:about="http://marg.org/thesaurus/marg/paintings">
+    <skos:prefLabel xml:lang="en">Paintings</skos:prefLabel>
+    <skos:inScheme rdf:resource="http://marg.org/thesaurus/marg"/>
+  </skos:Concept>
+
+  <skos:Concept rdf:about="http://marg.org/thesaurus/marg/sculptures">
+    <skos:prefLabel xml:lang="en">Sculptures</skos:prefLabel>
+    <skos:inScheme rdf:resource="http://marg.org/thesaurus/marg"/>
+  </skos:Concept>
+
+  <skos:Concept rdf:about="http://marg.org/thesaurus/marg/furniture">
+    <skos:prefLabel xml:lang="en">Furniture</skos:prefLabel>
+    <skos:inScheme rdf:resource="http://marg.org/thesaurus/marg"/>
+  </skos:Concept>
+
+  <skos:Concept rdf:about="http://marg.org/thesaurus/marg/manuscripts">
+    <skos:prefLabel xml:lang="en">Manuscripts</skos:prefLabel>
+    <skos:inScheme rdf:resource="http://marg.org/thesaurus/marg"/>
+  </skos:Concept>
+
+</rdf:RDF>
