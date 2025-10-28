@@ -1,0 +1,13 @@
+
+
+services:
+  arches:
+    volumes:
+      - ./custom/templates:/arches_app/arches_proj/arches_proj/templates
+      - ./custom/media:/arches_app/arches_proj/arches_proj/media
+      - ./arches_proj/ontologies:/arches_app/arches_proj/ontologies
+      - ./custom:/arches_app/arches_proj/custom
+
+  nginx:
+    volumes:
+      - ./custom/media:/usr/share/nginx/html/media

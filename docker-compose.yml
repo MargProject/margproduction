@@ -1,0 +1,223 @@
+services:
+
+  arches_db:
+    container_name: arches_db
+    image: postgis/postgis:14-3.2
+    env_file:
+      - ./.env
+    environment:
+      - PGUSER=postgres
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgis
+      - POSTGRES_MULTIPLE_EXTENSIONS=postgis,postgis_topology
+    restart: always
+    volumes:
+        - arches_proj_postgres-data:/var/lib/postgresql/data/
+        - arches_proj_postgres-log:/var/log/postgresql
+        - ./init-unix.sql:/docker-entrypoint-initdb.d/init.sql # to set up the DB template
+        - ../arches_data/:/arches_data
+        - arches_proj_arches_db_data:/var/lib/postgresql/data      #TO PREVENT DATA FROM LOSING LIKE SUPERUSER
+    ports:
+      - '5434:5432'
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10k"
+        max-file: "10"
+    networks:
+      - arches_net
+
+  arches_elasticsearch:
+    container_name: arches_elasticsearch
+    image: elasticsearch:8.5.3
+    restart: always
+    env_file:
+      - ./.env
+    environment:
+      - TZ="${TZ}"
+      - xpack.security.enabled=false
+      - discovery.type=single-node
+      - "ES_JAVA_OPTS=-Xms400m -Xmx400m"
+    volumes:
+      - arches_proj_elasticsearch-data:/usr/share/elasticsearch/data
+    ports:
+      - "9202:9200"
+      - "9302:9300"
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10k"
+        max-file: "10"
+    networks:
+      - arches_net
+
+  arches_redis:
+    container_name: arches_redis
+    image: "redis:6-alpine"
+    restart: always
+    ports:
+      - "6379:6379"
+    volumes:
+      - "arches_proj_redisdata:/data"
+    command: "redis-server"
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10k"
+        max-file: "10"
+    networks:
+      - arches_net
+
+  arches:
+    container_name: arches
+    image: arches
+    env_file:
+      - ./.env
+    build:
+      context: .
+      dockerfile: arches/Dockerfile
+      args:
+        ARCHES_PROJECT: ${ARCHES_PROJECT}
+        ARCHES_ROOT: ${ARCHES_ROOT}
+        APP_ROOT: ${APP_ROOT}
+        APP_COMP_FOLDER: ${APP_COMP_FOLDER}
+        UPLOADED_FILES_FOLDER: ${UPLOADED_FILES_FOLDER}
+    environment:
+      - DEBUG="${DJANGO_DEBUG}"
+      - ARCHES_PROJECT=${ARCHES_PROJECT}
+    stdin_open: true # docker run -i
+    tty: true        # docker run -t
+    ports:
+      - "5432:5432"
+      - "8004:8000"
+      - "5678:5678"
+      - "5984:5984"
+    depends_on:
+      - arches_db
+      - arches_elasticsearch
+      - arches_redis
+    command:
+      - run_arches
+    expose:
+      - "8004:8000"
+    volumes:
+      - arches_proj_arches-log:/web_root/logs
+      - arches_proj_arches-static:/static_root                  #DB STORAGE
+      - arches_proj_arches-app:/arches_app
+      - ./arches_data/:/arches_data
+      - arches_proj_arches_media:/arches_app/arches_proj/media   #DB STORAGE
+      - arches_media:/arches_app/arches_proj/media
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "10"
+    networks:
+      - arches_net
+
+  nginx:
+    container_name: nginx
+    build: ./nginx
+    image: arches_via_docker/nginx
+    env_file:
+      - ./.env
+    environment:
+      - DOMAINS="${DOMAINS}"
+      - DEPLOY_HOST="${DEPLOY_HOST}"
+      - CERT_PATH="${CERT_PATH}"
+      - DJANGO_PORT="${DJANGO_PORT}"
+    volumes:
+      - logs_nginx:/logs/nginx
+      - nginx_ssl:/etc/nginx/ssl
+      - certbot_certs:/etc/letsencrypt
+      - arches_certbot:$CERT_PATH
+      - arches_proj_arches-static:/static_root
+      - ./html:$NGINX_HTML_PATH
+      - ./custom/media:/arches/arches_proj/media
+      - ./arches-via-docker/custom/media:/media_root
+      - arches_media:/media_root
+      - ./custom/media:/usr/share/nginx/html/media
+    ports:
+      - "80:80"
+      - "443:443"
+    restart: always
+    depends_on:
+      - arches
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "10"
+    networks:
+      - arches_net
+
+  certbot:
+    container_name: certbot
+    build: ./certbot
+    image: arches_via-docker/certbot
+    env_file:
+      - ./.env
+    volumes:
+      - certbot_certs:/etc/letsencrypt
+      - arches_certbot:$CERT_PATH
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "1k"
+        max-file: "3"
+    networks:
+      - arches_net
+
+  cron:
+    container_name: cron
+    build: ./cron
+    image: arches_via_docker/cron
+    environment:
+      COMPOSE_PROJECT_NAME: "${COMPOSE_PROJECT_NAME}"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - ./:/workdir:ro
+    restart: unless-stopped
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "1k"
+        max-file: "3"
+    networks:
+      - arches_net
+
+networks:
+  arches_net:
+    driver: bridge
+    name: arches_net
+
+volumes:
+  nginx_ssl:
+    external: true
+  certbot_certs:
+    external: true
+  arches_certbot:
+    external: true
+  arches_proj_redisdata:
+    external: true
+  arches_proj_postgres-data:
+    external: true
+  arches_proj_postgres-log:
+    external: true
+  arches_proj_elasticsearch-data:
+    external: true
+  arches_proj_arches-log:
+    external: true
+  arches_proj_arches-static:     #DB
+    external: true
+  arches_proj_arches-app:
+    external: true
+  logs_nginx:
+    external: true
+  arches_proj_arches_db_data:    #DB
+    external: true
+  arches_proj_arches_media:      #DB
+    external: true
+  arches_media:
+
+
