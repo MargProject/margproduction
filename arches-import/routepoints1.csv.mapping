@@ -1,0 +1,49 @@
+{
+    "resource_model_id": "4717616d-a8e1-4e44-8c9e-ce797db8d45e",
+    "resource_model_name": "Route Point",
+    "nodes": [
+        {
+            "arches_nodeid": "74eecd16-037b-401a-90a0-3d8851853faa",
+            "arches_node_name": "Belongs to Route",
+            "file_field_name": "Belongs to Route",
+            "data_type": "resource-instance",
+            "export": true
+        },
+        {
+            "arches_nodeid": "585ac019-9541-4df0-a95e-718b74308e0b",
+            "arches_node_name": "Category",
+            "file_field_name": "Category",
+            "data_type": "concept",
+            "concept_export_value": "label",
+            "export": true
+        },
+        {
+            "arches_nodeid": "ff000527-d148-4a07-aeb5-1b819236315c",
+            "arches_node_name": "Description",
+            "file_field_name": "Description",
+            "data_type": "string",
+            "export": true
+        },
+        {
+            "arches_nodeid": "325210f8-971b-4586-af61-7e04515b2169",
+            "arches_node_name": "Location",
+            "file_field_name": "Location",
+            "data_type": "geojson-feature-collection",
+            "export": true
+        },
+        {
+            "arches_nodeid": "75693399-06b7-44bd-bb8e-a3cdc70bda69",
+            "arches_node_name": "Media File",
+            "file_field_name": "Media File",
+            "data_type": "file-list",
+            "export": true
+        },
+        {
+            "arches_nodeid": "38f04577-5d8d-4fcb-948f-6745463c1131",
+            "arches_node_name": "Name",
+            "file_field_name": "Name",
+            "data_type": "string",
+            "export": true
+        }
+    ]
+}
