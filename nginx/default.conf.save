@@ -1,0 +1,22 @@
+server {
+    listen 80;
+    server_name 192.168.1.196;
+
+    # Proxy all requests to the arches app
+    location / {
+        proxy_pass http://arches:8000;
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+    }
+
+    # Serve static files
+    location /static/ {
+        alias /static_root/;
+    }
+
+    # Serve uploaded files (if your project uses MEDIA_URL = /media/)    location /media/ {
+        alias /arches_app/media/;
+    }
+}
