@@ -1,0 +1,12 @@
+{
+  "ontologyid": "cidoc-crm-6.2",
+  "name": "CIDOC CRM",
+  "version": "6.2",
+  "base_id": "f3c5b1f0-9a47-4f36-bc44-6f1b1d6c9a62",
+  "base_name": "CIDOC CRM 6.2",
+  "base_version": "6.2",
+  "description": "CIDOC Conceptual Reference Model, version 6.2",
+  "source": "CIDOC_CRM_6.2.rdf",
+  "base": "CIDOC_CRM_6.2.rdf",
+  "extensions": []
+}
